@@ -1,0 +1,7 @@
+position_id,trade_date,book,commodity,contract_code,contract_month,direction,lots,contract_size,entry_price,currency,unit,counterparty
+FUT-0001,2026-05-07,Crude Alpha,BRENT,BRTM26,2026-6,BUY,12,1000,84.10,USD,bbl,Synthetic Energy A
+FUT-0002,2026-05-07,Crude Alpha,BRENT,BRTM26,2026-06,SELL,5,1000,84.22,USD,bbl,Synthetic Energy B
+FUT-0003,2026-05-07,Crude Alpha,BRENT,BRTN26,2026-07,SELL,3,1000,83.95,USD,bbl,Synthetic Energy C
+FUT-0004,2026-05-07,Crude Beta,WTI,WTIM26,2026-06,BUY,8,1000,79.35,USD,bbl,Synthetic Energy D
+FUT-0005,2026-05-07,Crude Beta,WTI,WTIM26,2026-06,SELL,10,1000,79.42,USD,bbl,Synthetic Energy E
+FUT-0006,2026-05-07,Crude Beta,WTI,WTIN26,2026-07,BUY,4,1000,79.05,USD,bbl,Synthetic Energy F

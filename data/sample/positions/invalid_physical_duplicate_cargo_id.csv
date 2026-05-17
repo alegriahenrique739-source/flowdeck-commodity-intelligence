@@ -1,0 +1,3 @@
+cargo_id,trade_date,book,commodity,buy_sell,volume_bbl,pricing_index,pricing_month,fixed_price,differential,delivery_start,delivery_end,location,freight_cost_per_bbl,storage_cost_per_bbl,currency,unit,counterparty
+CARGO-0001,2026-05-03,Physical Atlantic,BRENT,BUY,600000,BRENT,2026-06,,0.35,2026-06-05,2026-06-08,Rotterdam,,0,USD,bbl,Synthetic Refiner A
+CARGO-0001,2026-05-04,Physical Gulf,WTI,SELL,300000,WTI,2026-07,,0.05,2026-07-14,2026-07-18,Houston,,0,USD,bbl,Synthetic Trader E

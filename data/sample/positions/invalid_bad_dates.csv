@@ -1,0 +1,2 @@
+position_id,trade_date,book,commodity,contract_code,contract_month,direction,lots,contract_size,entry_price,currency,unit,counterparty
+FUT-0001,2026-02-30,Crude Alpha,BRENT,BRTM26,2026-06,BUY,12,1000,84.10,USD,bbl,Synthetic Energy A

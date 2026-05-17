@@ -1,0 +1,2 @@
+valuation_date,commodity,contract_code,contract_month,expiry_date,price,currency,unit,source
+2026-02-30,BRENT,BRTM26,2026-06,not-a-date,84.12,USD,bbl,synthetic_demo

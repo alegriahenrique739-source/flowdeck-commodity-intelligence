@@ -1,0 +1,7 @@
+valuation_date,commodity,contract_code,contract_month,expiry_date,price,currency,unit,source
+2026-05-08,BRENT,BRTM26,2026-6,2026-05-29,84.12,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTN26,2026-07,2026-06-30,83.76,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTQ26,2026-08,2026-07-31,83.31,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIM26,2026-06,2026-05-20,79.45,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIN26,2026-07,2026-06-22,79.08,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIQ26,2026-08,2026-07-21,78.62,USD,bbl,synthetic_demo

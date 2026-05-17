@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local environment
+.env
+.env.*
+!.env.example
+!frontend/.env.local.example
+
+# Generated artifacts
+reports/*.xlsx
+reports/*.csv
+reports/**/*.xlsx
+reports/**/*.csv
+runs/*
+!runs/.gitkeep
+.uv-cache/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env.local
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+frontend/tsconfig.tsbuildinfo
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

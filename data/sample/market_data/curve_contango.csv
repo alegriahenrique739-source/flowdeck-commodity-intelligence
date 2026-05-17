@@ -1,0 +1,13 @@
+valuation_date,commodity,contract_code,contract_month,expiry_date,price,currency,unit,source
+2026-05-08,WTI,WTIM26,2026-06,2026-05-20,78.10,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIN26,2026-07,2026-06-22,78.35,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIQ26,2026-08,2026-07-21,78.65,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIU26,2026-09,2026-08-20,78.95,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIV26,2026-10,2026-09-22,79.20,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIX26,2026-11,2026-10-20,79.45,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIZ26,2026-12,2026-11-20,79.70,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIF27,2027-01,2026-12-21,79.92,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIG27,2027-02,2027-01-20,80.15,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIH27,2027-03,2027-02-22,80.35,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIJ27,2027-04,2027-03-22,80.52,USD,bbl,synthetic_demo
+2026-05-08,WTI,WTIK27,2027-05,2027-04-20,80.70,USD,bbl,synthetic_demo

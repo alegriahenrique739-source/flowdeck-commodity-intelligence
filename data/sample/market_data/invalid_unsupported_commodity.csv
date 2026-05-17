@@ -1,0 +1,2 @@
+valuation_date,commodity,contract_code,contract_month,expiry_date,price,currency,unit,source
+2026-05-08,DUBAI,DUBM26,2026-06,2026-05-29,82.10,USD,bbl,synthetic_demo

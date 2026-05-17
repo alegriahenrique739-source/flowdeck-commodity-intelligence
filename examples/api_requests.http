@@ -1,0 +1,137 @@
+@baseUrl = http://127.0.0.1:8000
+
+### Health
+GET {{baseUrl}}/health
+
+### Capabilities
+GET {{baseUrl}}/capabilities
+
+### Market data validation
+POST {{baseUrl}}/market-data/validate
+Content-Type: multipart/form-data; boundary=FlowDeckBoundary
+
+--FlowDeckBoundary
+Content-Disposition: form-data; name="file"; filename="valid_brent_wti_futures.csv"
+Content-Type: text/csv
+
+< ../data/sample/market_data/valid_brent_wti_futures.csv
+--FlowDeckBoundary--
+
+### Build curves
+POST {{baseUrl}}/curves/build
+Content-Type: multipart/form-data; boundary=FlowDeckBoundary
+
+--FlowDeckBoundary
+Content-Disposition: form-data; name="file"; filename="valid_brent_wti_futures.csv"
+Content-Type: text/csv
+
+< ../data/sample/market_data/valid_brent_wti_futures.csv
+--FlowDeckBoundary--
+
+### Futures positions analyze
+POST {{baseUrl}}/positions/futures/analyze
+Content-Type: multipart/form-data; boundary=FlowDeckBoundary
+
+--FlowDeckBoundary
+Content-Disposition: form-data; name="file"; filename="valid_futures_positions.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_futures_positions.csv
+--FlowDeckBoundary--
+
+### Physical cargoes analyze
+POST {{baseUrl}}/positions/physical/analyze
+Content-Type: multipart/form-data; boundary=FlowDeckBoundary
+
+--FlowDeckBoundary
+Content-Disposition: form-data; name="file"; filename="valid_physical_cargoes.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_physical_cargoes.csv
+--FlowDeckBoundary--
+
+### Net exposure
+POST {{baseUrl}}/exposure/net
+Content-Type: multipart/form-data; boundary=FlowDeckBoundary
+
+--FlowDeckBoundary
+Content-Disposition: form-data; name="futures_file"; filename="valid_futures_positions.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_futures_positions.csv
+--FlowDeckBoundary
+Content-Disposition: form-data; name="physical_file"; filename="valid_physical_cargoes.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_physical_cargoes.csv
+--FlowDeckBoundary--
+
+### Hedge simulation
+POST {{baseUrl}}/hedging/simulate
+Content-Type: multipart/form-data; boundary=FlowDeckBoundary
+
+--FlowDeckBoundary
+Content-Disposition: form-data; name="target_hedge_ratio"
+
+0.80
+--FlowDeckBoundary
+Content-Disposition: form-data; name="futures_file"; filename="valid_futures_positions.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_futures_positions.csv
+--FlowDeckBoundary
+Content-Disposition: form-data; name="physical_file"; filename="valid_physical_cargoes.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_physical_cargoes.csv
+--FlowDeckBoundary--
+
+### Stress P&L
+POST {{baseUrl}}/risk/stress
+Content-Type: multipart/form-data; boundary=FlowDeckBoundary
+
+--FlowDeckBoundary
+Content-Disposition: form-data; name="scenario_name"
+
+PARALLEL_DOWN_5
+--FlowDeckBoundary
+Content-Disposition: form-data; name="futures_file"; filename="valid_futures_positions.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_futures_positions.csv
+--FlowDeckBoundary
+Content-Disposition: form-data; name="physical_file"; filename="valid_physical_cargoes.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_physical_cargoes.csv
+--FlowDeckBoundary--
+
+### Excel report
+POST {{baseUrl}}/reports/excel
+Content-Type: multipart/form-data; boundary=FlowDeckBoundary
+
+--FlowDeckBoundary
+Content-Disposition: form-data; name="target_hedge_ratio"
+
+0.80
+--FlowDeckBoundary
+Content-Disposition: form-data; name="stress_scenario"
+
+PARALLEL_DOWN_5
+--FlowDeckBoundary
+Content-Disposition: form-data; name="market_data_file"; filename="valid_brent_wti_futures.csv"
+Content-Type: text/csv
+
+< ../data/sample/market_data/valid_brent_wti_futures.csv
+--FlowDeckBoundary
+Content-Disposition: form-data; name="futures_file"; filename="valid_futures_positions.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_futures_positions.csv
+--FlowDeckBoundary
+Content-Disposition: form-data; name="physical_file"; filename="valid_physical_cargoes.csv"
+Content-Type: text/csv
+
+< ../data/sample/positions/valid_physical_cargoes.csv
+--FlowDeckBoundary--
+

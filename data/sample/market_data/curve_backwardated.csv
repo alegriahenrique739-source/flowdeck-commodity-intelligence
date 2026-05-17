@@ -1,0 +1,13 @@
+valuation_date,commodity,contract_code,contract_month,expiry_date,price,currency,unit,source
+2026-05-08,BRENT,BRTM26,2026-06,2026-05-29,86.00,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTN26,2026-07,2026-06-30,85.55,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTQ26,2026-08,2026-07-31,85.10,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTU26,2026-09,2026-08-31,84.70,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTV26,2026-10,2026-09-30,84.25,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTX26,2026-11,2026-10-30,83.90,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTZ26,2026-12,2026-11-30,83.55,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTF27,2027-01,2026-12-31,83.20,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTG27,2027-02,2027-01-29,82.95,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTH27,2027-03,2027-02-26,82.70,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTJ27,2027-04,2027-03-31,82.45,USD,bbl,synthetic_demo
+2026-05-08,BRENT,BRTK27,2027-05,2027-04-30,82.20,USD,bbl,synthetic_demo
