@@ -1,6 +1,6 @@
 # Public Demo Deployment Runbook
 
-This runbook prepares FlowDeck for the first public demo deployment. Do not deploy until the checklist has been reviewed.
+This runbook records the Public Demo V1 deployment procedure and the currently deployed URLs.
 
 Before pushing to GitHub or sharing a deployment, review `docs/PUBLIC_DEMO_RELEASE_CHECKLIST.md`.
 
@@ -18,16 +18,22 @@ The `/workspace` upload workflow remains local/development-only until upload sec
 
 ## Target URLs
 
-Backend placeholder:
+Backend:
 
 ```text
-https://your-flowdeck-api.onrender.com
+https://flowdeck-api.onrender.com
 ```
 
-Frontend placeholder:
+Frontend:
 
 ```text
-https://your-flowdeck-demo.vercel.app
+https://flowdeck-commodity-intelligence.vercel.app
+```
+
+Demo entry:
+
+```text
+https://flowdeck-commodity-intelligence.vercel.app/demo
 ```
 
 ## Deployment Order
@@ -47,7 +53,7 @@ https://your-flowdeck-demo.vercel.app
 
 | Variable | Local value | Production placeholder | Required | Notes |
 | --- | --- | --- | --- | --- |
-| `FLOWDECK_ALLOWED_ORIGINS` | `http://localhost:3000,http://127.0.0.1:3000` | `https://your-flowdeck-demo.vercel.app` | Yes | Use exact origins. Avoid wildcard CORS. |
+| `FLOWDECK_ALLOWED_ORIGINS` | `http://localhost:3000,http://127.0.0.1:3000` | `https://flowdeck-commodity-intelligence.vercel.app` | Yes | Use exact origins. Avoid wildcard CORS. |
 | `PORT` | Platform/dev-server provided | Render/platform provided | Yes in public host | Do not hardcode local ports in deployment config. |
 
 No secrets are currently required for public demo mode.
@@ -56,7 +62,7 @@ No secrets are currently required for public demo mode.
 
 | Variable | Local value | Production placeholder | Required | Notes |
 | --- | --- | --- | --- | --- |
-| `NEXT_PUBLIC_FLOWDECK_API_BASE_URL` | `http://127.0.0.1:8000` | `https://your-flowdeck-api.onrender.com` | Yes | Must point to the deployed FastAPI backend. |
+| `NEXT_PUBLIC_FLOWDECK_API_BASE_URL` | `http://127.0.0.1:8000` | `https://flowdeck-api.onrender.com` | Yes | Must point to the deployed FastAPI backend. |
 | `NEXT_PUBLIC_FLOWDECK_PUBLIC_DEMO_MODE` | `false` | `true` | Yes for public demo | Emphasizes `/demo` and keeps Workspace out of top-level nav. |
 
 ## Backend Platform Setup Notes
@@ -67,8 +73,8 @@ Render-style setup:
 - Start command: `uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT`
 - Root directory: repository root.
 - Python: use a supported Python 3 runtime. The app is currently tested locally with modern Python 3.
-- Health check: `https://your-flowdeck-api.onrender.com/health`
-- API docs: `https://your-flowdeck-api.onrender.com/docs`
+- Health check: `https://flowdeck-api.onrender.com/health`
+- API docs: `https://flowdeck-api.onrender.com/docs`
 
 Common backend failure points:
 
@@ -91,7 +97,7 @@ Vercel-style setup:
 Required env vars:
 
 ```text
-NEXT_PUBLIC_FLOWDECK_API_BASE_URL=https://your-flowdeck-api.onrender.com
+NEXT_PUBLIC_FLOWDECK_API_BASE_URL=https://flowdeck-api.onrender.com
 NEXT_PUBLIC_FLOWDECK_PUBLIC_DEMO_MODE=true
 ```
 
@@ -104,6 +110,15 @@ Common frontend failure points:
 - Vercel project root set to repo root instead of `frontend/`.
 
 ## Public Demo Smoke Test Checklist
+
+Current manual pass status:
+
+- `https://flowdeck-api.onrender.com/health` works.
+- `https://flowdeck-commodity-intelligence.vercel.app/demo` opens.
+- **Run Sample Demo** works.
+- Generated `/runs/[runId]` detail page opens.
+- Excel report downloads successfully.
+- Render CORS includes `https://flowdeck-commodity-intelligence.vercel.app`.
 
 After deployment:
 

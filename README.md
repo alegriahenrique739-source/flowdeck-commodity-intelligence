@@ -10,6 +10,15 @@ Public Demo V1 flow:
 /demo -> Run Sample Demo -> /runs/[runId] -> Download Excel Report
 ```
 
+Live Public Demo V1:
+
+```text
+Frontend: https://flowdeck-commodity-intelligence.vercel.app
+Demo:     https://flowdeck-commodity-intelligence.vercel.app/demo
+Backend:  https://flowdeck-api.onrender.com
+Health:   https://flowdeck-api.onrender.com/health
+```
+
 Local demo commands:
 
 ```bash
@@ -90,7 +99,7 @@ Quick review links:
 
 ## Development Status
 
-FlowDeck is preparing for Public Demo V1. The intended public entry point is `/demo`; the manual `/workspace` CSV upload flow should remain local/development-only until authentication, upload security, rate limiting, and storage review are implemented.
+FlowDeck Public Demo V1 is deployed. The intended public entry point is `/demo`; the manual `/workspace` CSV upload flow should remain local/development-only until authentication, upload security, rate limiting, and storage review are implemented.
 
 ## Project Guardrails
 
@@ -258,6 +267,17 @@ Deployment guide:
 docs/DEPLOYMENT_GUIDE.md
 ```
 
+Public deployment QA:
+
+```text
+https://flowdeck-api.onrender.com/health works
+https://flowdeck-commodity-intelligence.vercel.app/demo opens
+Run Sample Demo works
+/runs/[runId] opens from the generated run
+Excel report downloads successfully
+Render CORS includes https://flowdeck-commodity-intelligence.vercel.app
+```
+
 Public demo deployment runbook:
 
 ```text
@@ -269,15 +289,15 @@ docs/PUBLIC_DEMO_V1_RELEASE_NOTES.md
 docs/GITHUB_READINESS_CHECKLIST.md
 ```
 
-The next product target is FlowDeck Public Demo V1.0. The intended public entry point is `/demo`: a reviewer should be able to run the backend-owned synthetic sample workflow, view the generated run detail, and download the Excel report from a public link. The `/workspace` CSV upload workflow should remain local/development-only until it receives explicit upload security, authentication, rate limiting, and storage review.
+FlowDeck Public Demo V1 is deployed. The intended public entry point is `/demo`: a reviewer can run the backend-owned synthetic sample workflow, view the generated run detail, and download the Excel report from a public link. The `/workspace` CSV upload workflow should remain local/development-only until it receives explicit upload security, authentication, rate limiting, and storage review.
 
 Target first public demo stack:
 
 ```text
-Frontend: Vercel
-Backend: Render or equivalent FastAPI host
-Frontend env: NEXT_PUBLIC_FLOWDECK_API_BASE_URL, NEXT_PUBLIC_FLOWDECK_PUBLIC_DEMO_MODE=true
-Backend env: FLOWDECK_ALLOWED_ORIGINS
+Frontend: https://flowdeck-commodity-intelligence.vercel.app
+Backend: https://flowdeck-api.onrender.com
+Frontend env: NEXT_PUBLIC_FLOWDECK_API_BASE_URL=https://flowdeck-api.onrender.com, NEXT_PUBLIC_FLOWDECK_PUBLIC_DEMO_MODE=true
+Backend env: FLOWDECK_ALLOWED_ORIGINS=https://flowdeck-commodity-intelligence.vercel.app
 ```
 
 Example health check:

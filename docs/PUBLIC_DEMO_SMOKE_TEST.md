@@ -5,14 +5,29 @@ Use this checklist after every public demo deployment.
 Backend URL:
 
 ```text
-https://your-flowdeck-api.onrender.com
+https://flowdeck-api.onrender.com
 ```
 
 Frontend URL:
 
 ```text
-https://your-flowdeck-demo.vercel.app
+https://flowdeck-commodity-intelligence.vercel.app
 ```
+
+Demo entry:
+
+```text
+https://flowdeck-commodity-intelligence.vercel.app/demo
+```
+
+Current Public Demo V1 pass status:
+
+- Backend health works.
+- `/demo` opens.
+- **Run Sample Demo** works.
+- Generated `/runs/[runId]` detail page opens.
+- Excel report downloads successfully.
+- Render CORS includes the Vercel frontend origin.
 
 ## Test URLs
 
@@ -23,6 +38,16 @@ https://your-flowdeck-demo.vercel.app
 | Frontend home | `/` | FlowDeck page loads |  |  |
 | Demo page | `/demo` | Demo page loads and shows Run Sample Demo |  |  |
 | Runs dashboard | `/runs` | Runs page loads |  |  |
+
+## Current Deployed URL Checks
+
+| Check | URL | Current status |
+| --- | --- | --- |
+| Backend health | `https://flowdeck-api.onrender.com/health` | Pass |
+| Backend docs | `https://flowdeck-api.onrender.com/docs` | Available for review |
+| Frontend home | `https://flowdeck-commodity-intelligence.vercel.app` | Pass |
+| Demo page | `https://flowdeck-commodity-intelligence.vercel.app/demo` | Pass |
+| Demo workflow | `/demo -> Run Sample Demo -> /runs/[runId] -> Download Excel Report` | Pass |
 
 ## Demo Flow
 
@@ -47,4 +72,3 @@ https://your-flowdeck-demo.vercel.app
 ## Notes
 
 Record deployment URL, commit, date, and any failures here before sharing the public link.
-

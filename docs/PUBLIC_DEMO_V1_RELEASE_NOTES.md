@@ -8,6 +8,15 @@ FlowDeck Public Demo V1
 
 FlowDeck Public Demo V1 is the first share-ready version intended for professors, recruiters, commodities professionals, and technical reviewers. It demonstrates a public-link workflow for Brent/WTI commodity trading intelligence using backend-owned synthetic demo data.
 
+Public Demo V1 is live:
+
+```text
+Frontend: https://flowdeck-commodity-intelligence.vercel.app
+Demo:     https://flowdeck-commodity-intelligence.vercel.app/demo
+Backend:  https://flowdeck-api.onrender.com
+Health:   https://flowdeck-api.onrender.com/health
+```
+
 Primary public flow:
 
 ```text
@@ -87,15 +96,24 @@ Current release checks include:
 
 ## Deployment Readiness Status
 
-Ready for a first deployment dry run to Vercel plus Render-style FastAPI hosting. Not production-ready.
+Deployed to Vercel plus Render-style FastAPI hosting for Public Demo V1. Still not production-ready.
 
-Required public demo env vars:
+Public demo env vars:
 
 ```text
-NEXT_PUBLIC_FLOWDECK_API_BASE_URL=https://your-flowdeck-api.onrender.com
+NEXT_PUBLIC_FLOWDECK_API_BASE_URL=https://flowdeck-api.onrender.com
 NEXT_PUBLIC_FLOWDECK_PUBLIC_DEMO_MODE=true
-FLOWDECK_ALLOWED_ORIGINS=https://your-flowdeck-demo.vercel.app
+FLOWDECK_ALLOWED_ORIGINS=https://flowdeck-commodity-intelligence.vercel.app
 ```
+
+Manual public deployment QA confirmed:
+
+- Backend `/health` works.
+- Public `/demo` opens.
+- **Run Sample Demo** works.
+- Generated `/runs/[runId]` detail page opens.
+- Excel report downloads successfully.
+- Render CORS includes the Vercel frontend origin.
 
 ## Intentionally Not Included Yet
 
@@ -111,10 +129,8 @@ FLOWDECK_ALLOWED_ORIGINS=https://your-flowdeck-demo.vercel.app
 
 ## Next Roadmap Steps
 
-- Push clean repository to GitHub.
-- Create a stable checkpoint tag named `public-demo-v1` after final checks pass.
-- Perform first Vercel + Render deployment dry run.
-- Run public demo smoke test.
+- Keep the public demo link healthy and smoke-test after each deployment.
+- Create or update a stable checkpoint tag named `public-demo-v1` after final checks pass.
 - Decide whether to hide or gate `/workspace` at routing level before broader sharing.
 - Add durable storage and cleanup policy if public demo usage increases.
 - Add authentication and database persistence before production workflows.

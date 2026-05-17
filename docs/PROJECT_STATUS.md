@@ -1,6 +1,43 @@
 # Project Status
 
-FlowDeck is currently a local-first analytics backend for Brent/WTI oil desk workflows. It uses synthetic demo data only and exposes both service-level Python modules and a local FastAPI interface.
+FlowDeck is a deployed Public Demo V1 plus local development workflow for Brent/WTI oil desk analytics. It uses synthetic demo data only and exposes service-level Python modules, a FastAPI backend, and a Next.js frontend.
+
+## Public Demo V1 Deployment
+
+Public Frontend:
+
+```text
+https://flowdeck-commodity-intelligence.vercel.app
+```
+
+Public Demo Entry:
+
+```text
+https://flowdeck-commodity-intelligence.vercel.app/demo
+```
+
+Backend API:
+
+```text
+https://flowdeck-api.onrender.com
+```
+
+Public deployment QA status:
+
+- `https://flowdeck-api.onrender.com/health` works.
+- `https://flowdeck-commodity-intelligence.vercel.app/demo` opens.
+- **Run Sample Demo** works.
+- Generated `/runs/[runId]` detail page opens.
+- Excel report downloads successfully.
+- Render CORS includes the Vercel frontend origin.
+
+Public scope remains:
+
+```text
+/demo -> Run Sample Demo -> /runs/[runId] -> Download Excel Report
+```
+
+The `/workspace` CSV upload workflow remains local/development-only until public upload security, authentication, rate limiting, storage, and abuse controls are implemented.
 
 ## Current Capabilities
 
@@ -33,6 +70,7 @@ FlowDeck is currently a local-first analytics backend for Brent/WTI oil desk wor
 - Provide public demo release checklist and read-only repository hygiene checker.
 - Provide Public Demo V1 release notes and GitHub readiness checklist.
 - Provide Public Demo V1 tag note and GitHub repository description guidance.
+- Provide deployed Public Demo V1 on Vercel and Render.
 - Provide lightweight Playwright smoke tests for the main frontend pages.
 - Provide Playwright Workspace upload-flow tests using synthetic CSV samples and the local backend.
 - Provide Playwright frontend error-state coverage for API offline handling, disabled Workspace actions, backend validation failures, and report-generation failures.
@@ -155,9 +193,8 @@ Generated reports and local run records are ignored by git.
 - Run metadata API endpoints are read-only and local-file based.
 - Run report download is read-only and limited to the expected run folder.
 - CORS is configured for local frontend origins only by default.
-- No production frontend yet.
-- Frontend is currently local-only and calls existing backend endpoints.
-- Public Demo V1.0 target is `/demo` first, with run detail and Excel report download.
+- Public Demo V1 is deployed on Vercel with a Render-hosted backend.
+- Public Demo V1 target is `/demo` first, with run detail and Excel report download.
 - Public demo mode can be enabled with `NEXT_PUBLIC_FLOWDECK_PUBLIC_DEMO_MODE=true`.
 - `/workspace` upload flow should remain local/development-only until explicit upload security review.
 - Workspace calculations remain backend-only; the UI displays API outputs.
@@ -172,21 +209,21 @@ Generated reports and local run records are ignored by git.
 - Demo mode has backend endpoints, a Workspace panel, a dedicated `/demo` page, and direct run detail pages.
 - Demo-ready checkpoint guidance is documentation-only and should be reviewed before presentations or major increments.
 - Presentation package artifacts are synthetic-data-only and should not include real trade data, licensed market data, API keys, or secrets.
-- No deployment packaging yet.
+- Minimal deployment packaging exists for the public demo, but not production operations.
 - No trade execution.
 - No CTRM replacement workflow yet.
 - No VaR, scenario library management, or historical analytics.
 
 ## Next Possible Increments
 
-- Choose frontend/backend hosting targets for Public Demo V1.0.
-- Dry-run Render/Vercel deployment using `docs/PUBLIC_DEMO_DEPLOYMENT_RUNBOOK.md`.
+- Keep the deployed Public Demo V1 healthy and smoke-test after each deployment.
 - Use `docs/PUBLIC_DEMO_SMOKE_TEST.md` after each deployment attempt.
 - Run `scripts/check_repo_hygiene.py` and review `docs/PUBLIC_DEMO_RELEASE_CHECKLIST.md` before GitHub/public release.
 - Review `docs/GITHUB_READINESS_CHECKLIST.md` and `docs/PUBLIC_DEMO_V1_RELEASE_NOTES.md` before the first GitHub share.
 - Use `docs/PUBLIC_DEMO_V1_TAG_NOTE.md` for the first stable tag and backup name.
 - Use `docs/GITHUB_REPO_DESCRIPTION.md` when creating or polishing the GitHub repository page.
 - Keep `/demo` public-facing and keep `/workspace` local/development-only until secured.
+- Add deployment monitoring, cleanup policy, and durable storage planning if public usage grows.
 - Add a richer run comparison or recent-runs summary later if useful for demos.
 - Add bring-your-own-data market data integration design.
 - Add authentication and database persistence only after the local workflow contract is stable.

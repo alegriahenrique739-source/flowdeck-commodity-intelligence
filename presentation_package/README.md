@@ -4,6 +4,14 @@ FlowDeck is an Excel-native Commodity Trading Intelligence platform for Brent/WT
 
 This package is a lightweight review bundle for professors, recruiters, commodities professionals, and technical reviewers. It uses synthetic demo data only.
 
+Public Demo V1:
+
+```text
+Frontend: https://flowdeck-commodity-intelligence.vercel.app
+Demo:     https://flowdeck-commodity-intelligence.vercel.app/demo
+Backend:  https://flowdeck-api.onrender.com
+```
+
 ## Who It Is For
 
 - Commodities professors reviewing applied trading analytics.
@@ -45,7 +53,7 @@ The Workspace page remains available for manual CSV upload:
 http://localhost:3000/workspace
 ```
 
-For Public Demo V1.0, `/demo` is the intended public entry point. The Workspace upload flow should remain local/development-only until upload security and authentication are reviewed.
+For Public Demo V1, `/demo` is the intended public entry point. The Workspace upload flow should remain local/development-only until upload security and authentication are reviewed.
 
 ## Package Index
 

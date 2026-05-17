@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This guide describes the first public demo deployment target for FlowDeck. It is intentionally minimal and keeps the public scope focused on backend-owned synthetic demo mode.
+This guide describes the Public Demo V1 deployment for FlowDeck. It is intentionally minimal and keeps the public scope focused on backend-owned synthetic demo mode.
 
 For the step-by-step dry-run procedure, see `docs/PUBLIC_DEMO_DEPLOYMENT_RUNBOOK.md`.
 For post-deployment checks, use `docs/PUBLIC_DEMO_SMOKE_TEST.md`.
@@ -9,8 +9,8 @@ Before pushing for public review, use `docs/PUBLIC_DEMO_RELEASE_CHECKLIST.md`.
 
 ## Target Architecture
 
-- Frontend: Vercel-hosted Next.js app.
-- Backend: Render or equivalent FastAPI host.
+- Frontend: Vercel-hosted Next.js app at `https://flowdeck-commodity-intelligence.vercel.app`.
+- Backend: Render-hosted FastAPI app at `https://flowdeck-api.onrender.com`.
 - Frontend calls backend through `NEXT_PUBLIC_FLOWDECK_API_BASE_URL`.
 - Backend allows the deployed frontend origin through `FLOWDECK_ALLOWED_ORIGINS`.
 - Public entry point: `/demo`.
@@ -44,7 +44,7 @@ backend.app.main:app
 Required:
 
 ```text
-FLOWDECK_ALLOWED_ORIGINS=https://your-flowdeck-frontend.vercel.app
+FLOWDECK_ALLOWED_ORIGINS=https://flowdeck-commodity-intelligence.vercel.app
 ```
 
 Platform-provided:
@@ -69,7 +69,7 @@ Deploy the `frontend/` directory as the Vercel project root.
 Required frontend environment variables:
 
 ```text
-NEXT_PUBLIC_FLOWDECK_API_BASE_URL=https://your-flowdeck-api.onrender.com
+NEXT_PUBLIC_FLOWDECK_API_BASE_URL=https://flowdeck-api.onrender.com
 NEXT_PUBLIC_FLOWDECK_PUBLIC_DEMO_MODE=true
 ```
 
@@ -92,12 +92,21 @@ NEXT_PUBLIC_FLOWDECK_PUBLIC_DEMO_MODE=false
 Set backend CORS to the exact deployed frontend URL:
 
 ```text
-FLOWDECK_ALLOWED_ORIGINS=https://your-flowdeck-frontend.vercel.app
+FLOWDECK_ALLOWED_ORIGINS=https://flowdeck-commodity-intelligence.vercel.app
 ```
 
 If preview deployments need access, add only the exact preview origins you trust. Avoid `*`.
 
 ## Public Demo Smoke Test
+
+Current deployed URLs:
+
+```text
+Backend health: https://flowdeck-api.onrender.com/health
+Backend docs:   https://flowdeck-api.onrender.com/docs
+Frontend:       https://flowdeck-commodity-intelligence.vercel.app
+Demo:           https://flowdeck-commodity-intelligence.vercel.app/demo
+```
 
 After deployment:
 
@@ -111,6 +120,17 @@ After deployment:
 8. Click **Download Excel Report**.
 9. Confirm the `.xlsx` file downloads.
 10. Confirm the UI and docs clearly state synthetic demo data only.
+
+## Current Public Deployment QA
+
+Manual QA has confirmed:
+
+- Backend `/health` works.
+- Frontend `/demo` opens.
+- **Run Sample Demo** works.
+- Generated `/runs/[runId]` page opens.
+- Excel report downloads successfully.
+- Render CORS includes the Vercel frontend origin.
 
 ## Known Limitations
 
