@@ -1,0 +1,3 @@
+# Local HTTPS rehearsal only; not required by the deployed API.
+-r requirements.txt
+cryptography>=46

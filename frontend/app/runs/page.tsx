@@ -7,6 +7,7 @@ import { RunDetailPanel } from "@/components/RunDetailPanel";
 import { RunTable } from "@/components/RunTable";
 import { getRun, getRunReportUrl, getRuns } from "@/lib/api";
 import { formatBbl, formatUsd } from "@/lib/format";
+import { isPublicDemoMode } from "@/lib/config";
 import type { RunDetail, RunStatus, RunType } from "@/lib/types";
 
 const limits = [5, 10, 20, 50];
@@ -90,7 +91,9 @@ export default function RunsPage() {
         <div>
           <h1 className="text-3xl font-semibold text-white">Runs Dashboard</h1>
           <p className="mt-2 text-sm text-slate-400">
-            Read-only local workflow metadata from the FastAPI backend.
+            {isPublicDemoMode
+              ? "Shared synthetic demo runs, not a live portfolio. Figures summarize the displayed runs."
+              : "Read-only local workflow metadata from the FastAPI backend."}
           </p>
         </div>
       </div>
@@ -170,4 +173,3 @@ export default function RunsPage() {
     </LayoutShell>
   );
 }
-

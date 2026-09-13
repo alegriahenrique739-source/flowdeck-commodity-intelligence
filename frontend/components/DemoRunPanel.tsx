@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { isPublicDemoMode } from "@/lib/config";
 import { useEffect, useState } from "react";
 import { LoadingButton } from "@/components/LoadingButton";
 import { ResultMetricGrid } from "@/components/ResultMetricGrid";
@@ -42,6 +43,10 @@ export function DemoRunPanel() {
   const [isRunning, setIsRunning] = useState(false);
   const [demoResult, setDemoResult] = useState<DemoRunResponse | null>(null);
   const [demoError, setDemoError] = useState<string | null>(null);
+  const [completedSettings, setCompletedSettings] = useState<{
+    targetHedgeRatio: string;
+    stressScenario: StressScenarioName;
+  } | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -68,12 +73,12 @@ export function DemoRunPanel() {
     setIsRunning(true);
     setDemoError(null);
     setDemoResult(null);
+    setCompletedSettings(null);
+    const submitted = { targetHedgeRatio, stressScenario };
     try {
-      const result = await runSampleDemo({
-        targetHedgeRatio,
-        stressScenario
-      });
+      const result = await runSampleDemo(submitted);
       setDemoResult(result);
+      setCompletedSettings(submitted);
     } catch (err) {
       setDemoError(friendlyDemoError(err));
     } finally {
@@ -103,8 +108,9 @@ export function DemoRunPanel() {
           </p>
           <p className="mt-3 rounded-md border border-slate-800 bg-ink-950 p-3 text-xs text-slate-400">
             Demo mode uses synthetic sample data only and does not execute
-            trades. Manual CSV upload remains available in the Workspace for
-            explicit file testing.
+            trades. {isPublicDemoMode
+              ? "Uploads are not part of the public demo."
+              : "Manual CSV upload remains available in the Workspace for explicit file testing."}
           </p>
         </div>
 
@@ -115,6 +121,7 @@ export function DemoRunPanel() {
               className="mt-2 w-full rounded-md border border-slate-700 bg-ink-950 px-3 py-2 text-slate-100"
               onChange={(event) => setTargetHedgeRatio(event.target.value)}
               value={targetHedgeRatio}
+              disabled={isRunning}
             />
             <span className="mt-1 block text-xs text-slate-500">
               Current: {formatPercent(targetHedgeRatio)}
@@ -129,6 +136,7 @@ export function DemoRunPanel() {
                 setStressScenario(event.target.value as StressScenarioName)
               }
               value={stressScenario}
+              disabled={isRunning}
             >
               {demoStressScenarios.map((scenario) => (
                 <option key={scenario} value={scenario}>
@@ -186,7 +194,9 @@ export function DemoRunPanel() {
               <div className="font-semibold">Demo run failed.</div>
               <p className="mt-1">{demoError}</p>
               <p className="mt-2 text-xs text-red-100/80">
-                Confirm the backend is running and sample data files exist.
+                {isPublicDemoMode
+                  ? "If this persists, contact the demo operator. Existing run reports remain available from Runs."
+                  : "Confirm the backend is running and sample data files exist."}
               </p>
             </div>
           ) : null}
@@ -261,8 +271,8 @@ export function DemoRunPanel() {
                 <p className="mt-2">
                   FlowDeck loaded synthetic Brent/WTI market data, combined
                   physical cargoes and futures positions, calculated net
-                  exposure, simulated a {formatPercent(targetHedgeRatio)} hedge,
-                  ran the {stressScenario} stress scenario, generated run
+                  exposure, simulated a {formatPercent(completedSettings?.targetHedgeRatio)} hedge,
+                  ran the {completedSettings?.stressScenario} stress scenario, generated run
                   metadata, and exported an Excel report.
                 </p>
               </div>
@@ -316,12 +326,18 @@ function SampleFileRow({ label, value }: { label: string; value: string }) {
 function friendlyDemoError(err: unknown): string {
   if (err instanceof FlowDeckApiError) {
     if (err.message.toLowerCase().includes("failed to fetch")) {
-      return "Unable to reach the FlowDeck API. Confirm the backend is running at http://127.0.0.1:8000.";
+      return offlineDemoMessage();
     }
     return err.message;
   }
   if (err instanceof TypeError && String(err.message).toLowerCase().includes("fetch")) {
-    return "Unable to reach the FlowDeck API. Confirm the backend is running at http://127.0.0.1:8000.";
+    return offlineDemoMessage();
   }
   return err instanceof Error ? err.message : "Sample demo request failed.";
+}
+
+function offlineDemoMessage(): string {
+  return isPublicDemoMode
+    ? "The demo service is temporarily unavailable. Please retry shortly."
+    : "Unable to reach the FlowDeck API. Confirm the backend is running at http://127.0.0.1:8000.";
 }

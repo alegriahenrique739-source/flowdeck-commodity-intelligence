@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 from fastapi.responses import FileResponse
 
 from backend.app.api.routes._utils import error_response
@@ -14,7 +14,6 @@ from backend.app.services.workflows import (
     RunStatus,
     RunType,
 )
-
 
 RUN_ID_PATTERN = re.compile(r"^FD-RUN-\d{8}-\d{6}-[A-F0-9]{6}$")
 
@@ -53,8 +52,8 @@ RUN_REPORT_RESPONSES = {
 router = APIRouter(prefix="/runs")
 
 
-def get_run_registry() -> LocalRunRegistry:
-    return LocalRunRegistry()
+def get_run_registry(request: Request) -> LocalRunRegistry:
+    return request.app.state.run_registry or LocalRunRegistry()
 
 
 @router.get(

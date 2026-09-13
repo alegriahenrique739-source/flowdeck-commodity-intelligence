@@ -3,8 +3,13 @@ services:
     name: flowdeck-api
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT --workers 1
     envVars:
+      - key: FLOWDECK_DEPLOYMENT_MODE
+        value: public_demo
+      - key: FLOWDECK_ENABLE_LOCAL_IMPORTS
+        value: "false"
+      - key: FLOWDECK_PUBLIC_MAX_RUNS
+        value: "100"
       - key: FLOWDECK_ALLOWED_ORIGINS
         sync: false
-

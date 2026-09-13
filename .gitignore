@@ -18,6 +18,10 @@ venv/
 !frontend/.env.local.example
 
 # Generated artifacts
+reports/test_outputs/
+reports/qa/
+.uv-cache/
+private_data/
 reports/*.xlsx
 reports/*.csv
 reports/**/*.xlsx

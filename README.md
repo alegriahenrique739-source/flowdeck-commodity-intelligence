@@ -1,5 +1,9 @@
 # FlowDeck
 
+Release candidate: [restricted public deployment handoff](docs/PUBLIC_RELEASE_CANDIDATE.md).
+This branch excludes private/local advanced development. Deploy only in explicit
+public-demo mode; keep search indexing off pending live review.
+
 Excel-native Commodity Trading Intelligence for Brent/WTI oil desks.
 
 FlowDeck is a Python/FastAPI plus Next.js analytics product that validates synthetic market and position data, builds Brent/WTI forward curves, combines physical cargoes and futures positions, simulates hedges, stress-tests P&L, tracks demo runs, and exports trader-ready Excel reports.

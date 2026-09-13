@@ -1,6 +1,7 @@
 import os
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -20,6 +21,10 @@ from backend.app.api.routes import (
     risk,
     runs,
 )
+from backend.app.security.boundary import DemoAdmission, PublicDemoBoundary
+from backend.app.security.config import DeploymentPolicy
+from backend.app.security.public_runs import PublicDemoRegistry
+from backend.app.services.workflows.run_registry import PROJECT_ROOT
 
 DEFAULT_ALLOWED_ORIGINS = (
     "http://localhost:3000",
@@ -34,32 +39,10 @@ def _allowed_origins_from_env() -> list[str]:
     return [origin.strip() for origin in configured.split(",") if origin.strip()]
 
 
-app = FastAPI(
-    title="FlowDeck API",
-    version="0.1.0",
-    description=(
-        "Local API for FlowDeck commodity trading intelligence workflows, "
-        "including oil futures validation, Brent/WTI curve analytics, "
-        "position exposure, hedge simulation, stress P&L and Excel reporting."
-    ),
-    contact={"name": "FlowDeck Product Team"},
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=_allowed_origins_from_env(),
-    allow_credentials=False,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["*"],
-)
-
-
-@app.exception_handler(HTTPException)
 async def http_exception_handler(_request: Request, exc: HTTPException):
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
 
-@app.exception_handler(RequestValidationError)
 async def request_validation_exception_handler(
     _request: Request, exc: RequestValidationError
 ):
@@ -70,14 +53,13 @@ async def request_validation_exception_handler(
                 "error": "Invalid request.",
                 "error_code": "REQUEST_VALIDATION_ERROR",
                 "message": "Invalid request.",
-                "details": {"errors": exc.errors()},
-                "errors": exc.errors(),
+                "details": {"errors": jsonable_encoder(exc.errors())},
+                "errors": jsonable_encoder(exc.errors()),
             }
         },
     )
 
 
-@app.exception_handler(ValidationError)
 async def pydantic_validation_exception_handler(
     _request: Request, exc: ValidationError
 ):
@@ -88,14 +70,13 @@ async def pydantic_validation_exception_handler(
                 "error": "Validation failed.",
                 "error_code": "VALIDATION_ERROR",
                 "message": "Validation failed.",
-                "details": {"errors": exc.errors()},
-                "errors": exc.errors(),
+                "details": {"errors": jsonable_encoder(exc.errors())},
+                "errors": jsonable_encoder(exc.errors()),
             }
         },
     )
 
 
-@app.exception_handler(Exception)
 async def unexpected_exception_handler(_request: Request, _exc: Exception):
     return JSONResponse(
         status_code=500,
@@ -110,15 +91,117 @@ async def unexpected_exception_handler(_request: Request, _exc: Exception):
     )
 
 
-app.include_router(health.router)
-app.include_router(capabilities.router)
-app.include_router(info.router)
-app.include_router(demo.router)
-app.include_router(market_data.router)
-app.include_router(curves.router)
-app.include_router(positions.router)
-app.include_router(exposure.router)
-app.include_router(hedging.router)
-app.include_router(risk.router)
-app.include_router(reports.router)
-app.include_router(runs.router)
+def create_app(*, project_root=PROJECT_ROOT) -> FastAPI:
+    origins = _allowed_origins_from_env()
+    policy = DeploymentPolicy.from_env(origins)
+    application = FastAPI(
+        title="FlowDeck API",
+        version="0.1.0",
+        description=(
+            "Synthetic public demo API. No uploads or private portfolios. "
+            "Generation is bounded per process; all demo runs are shared."
+            if policy.is_public_demo
+            else "Local API for FlowDeck commodity trading intelligence workflows, "
+            "including oil futures validation, Brent/WTI curve analytics, "
+            "position exposure, hedge simulation, stress P&L and Excel reporting."
+        ),
+        contact={"name": "FlowDeck Product Team"},
+    )
+    application.state.deployment_policy = policy
+    application.state.run_registry = (
+        PublicDemoRegistry(project_root, policy.public_max_runs)
+        if policy.is_public_demo
+        else None
+    )
+    if policy.is_public_demo:
+        application.add_middleware(PublicDemoBoundary, admission=DemoAdmission())
+    # CORS surrounds boundary responses so allowed frontends see clean 403/429 errors.
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=False,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["*"],
+    )
+    for exception, handler in (
+        (HTTPException, http_exception_handler),
+        (RequestValidationError, request_validation_exception_handler),
+        (ValidationError, pydantic_validation_exception_handler),
+        (Exception, unexpected_exception_handler),
+    ):
+        application.add_exception_handler(exception, handler)
+
+    selected = [health, capabilities, info, demo, runs]
+    if not policy.is_public_demo:
+        selected.extend(
+            [
+                market_data,
+                curves,
+                positions,
+                exposure,
+                hedging,
+                risk,
+                reports,
+            ]
+        )
+    for route in selected:
+        application.include_router(route.router)
+
+    if policy.is_public_demo:
+        original_openapi = application.openapi
+
+        def public_openapi():
+            schema = original_openapi()
+            schema["x-flowdeck-deployment"] = {
+                "mode": "public_demo",
+                "uploads": "disabled",
+                "storage": "synthetic-only separate directory",
+                "max_stored_runs": policy.public_max_runs,
+                "max_active_generations": 1,
+                "generation_start_interval_seconds": 5,
+                "limits_scope": "single process",
+            }
+            for path in schema["paths"].values():
+                for operation in path.values():
+                    if isinstance(operation, dict) and "responses" in operation:
+                        for status, description in (
+                            ("400", "Invalid query or request body not allowed"),
+                            ("403", "Outside public demo scope"),
+                            ("408", "Request did not complete"),
+                            ("414", "Query too long"),
+                        ):
+                            operation["responses"].setdefault(
+                                status,
+                                {
+                                    "description": description,
+                                    "content": {
+                                        "application/json": {
+                                            "schema": {
+                                                "$ref": "#/components/schemas/ErrorEnvelope"
+                                            }
+                                        }
+                                    },
+                                },
+                            )
+            for status, description in (
+                (
+                    "429",
+                    "Generation busy or global start interval; Retry-After supplied",
+                ),
+                ("503", "Public demo storage full; operator review required"),
+            ):
+                schema["paths"]["/demo/run"]["post"]["responses"][status] = {
+                    "description": description,
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/ErrorEnvelope"}
+                        }
+                    },
+                }
+            return schema
+
+        application.openapi = public_openapi
+    return application
+
+
+app = create_app()

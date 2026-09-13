@@ -1,5 +1,12 @@
 # Project Status
 
+## Restricted Release Candidate
+
+See [Public Release Candidate](PUBLIC_RELEASE_CANDIDATE.md) for this branch's
+scope and hosting handoff. The new public boundary is locally tested, not yet
+verified on the live host. Earlier deployment confirmations below describe the
+previous version. Advanced local/private features are not included in this branch.
+
 FlowDeck is a deployed Public Demo V1 plus local development workflow for Brent/WTI oil desk analytics. It uses synthetic demo data only and exposes service-level Python modules, a FastAPI backend, and a Next.js frontend.
 
 ## Public Demo V1 Deployment

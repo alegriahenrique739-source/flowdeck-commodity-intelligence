@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { isPublicDemoMode } from "@/lib/config";
 import { formatBbl, formatDateTime, formatStatus, formatUsd, statusClass } from "@/lib/format";
 import type { RunDetail } from "@/lib/types";
 
@@ -14,8 +15,9 @@ export function RunTable({ runs, onSelect, getReportUrl }: RunTableProps) {
   if (runs.length === 0) {
     return (
       <div className="rounded-lg border border-slate-800 bg-ink-900 p-6 text-sm text-slate-300">
-        No local runs found. Run `python scripts/run_demo_workflow.py` from the
-        project root, then refresh this page.
+        {isPublicDemoMode ? <>
+          No demo runs match this view. Adjust the filters or <Link className="text-teal-200 underline" href="/demo">open Demo</Link> to generate a synthetic run.
+        </> : "No local runs found. Run `python scripts/run_demo_workflow.py` from the project root, then refresh this page."}
       </div>
     );
   }

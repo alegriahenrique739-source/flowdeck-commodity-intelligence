@@ -4,7 +4,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "FlowDeck",
-  description: "Excel-native Commodity Trading Intelligence"
+  description: "Excel-native Commodity Trading Intelligence",
+  robots: { index: false, follow: false }
 };
 
 export default function RootLayout({

@@ -2,20 +2,22 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
 
 from backend.app.api.routes._utils import error_response
+from backend.app.api.routes.runs import get_run_registry
 from backend.app.api.schemas.demo import (
     DemoRunResponse,
     DemoSampleFilesResponse,
 )
 from backend.app.api.schemas.errors import ERROR_RESPONSES, ErrorEnvelope
+from backend.app.security.public_runs import PublicDemoRegistry, PublicDemoStorageFull
 from backend.app.services.demo import (
     DemoStressScenario,
     get_demo_sample_files,
     run_sample_demo,
 )
-
+from backend.app.services.workflows import LocalRunRegistry
 
 DEMO_ERROR_RESPONSES = {
     **ERROR_RESPONSES,
@@ -90,12 +92,20 @@ def run_demo(
         description="Supported predefined stress scenario for the demo run.",
         examples=["PARALLEL_DOWN_5"],
     ),
+    registry: LocalRunRegistry = Depends(get_run_registry),
 ):
     try:
         return run_sample_demo(
             target_hedge_ratio=target_hedge_ratio,
             stress_scenario=stress_scenario,
+            registry=registry,
         )
+    except PublicDemoStorageFull as exc:
+        raise error_response(
+            "Public demo capacity reached. Contact the operator; existing reports remain available.",
+            503,
+            "PUBLIC_DEMO_STORAGE_FULL",
+        ) from exc
     except FileNotFoundError as exc:
         raise error_response(
             "Demo sample file not found.",
@@ -103,6 +113,12 @@ def run_demo(
             error_code="DEMO_SAMPLE_FILE_NOT_FOUND",
         ) from exc
     except ValueError as exc:
+        if isinstance(registry, PublicDemoRegistry):
+            raise error_response(
+                "Synthetic demo data could not be validated. Contact the operator.",
+                status_code=500,
+                error_code="DEMO_SAMPLE_VALIDATION_FAILED",
+            ) from exc
         raise error_response(
             str(exc),
             status_code=400,

@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { isPublicDemoMode } from "@/lib/config";
 import { DemoRunPanel } from "@/components/DemoRunPanel";
 import { LayoutShell } from "@/components/LayoutShell";
+import { publicPageMetadata } from "@/lib/search-visibility";
+
+export function generateMetadata() {
+  return publicPageMetadata("/demo");
+}
 
 const demoBullets = [
   "Validate market data",
@@ -79,12 +85,12 @@ export default function DemoPage() {
               and physical position data into curves, exposure, hedge impact,
               stress P&L, run metadata, and an Excel report.
             </p>
-            <Link
+            {!isPublicDemoMode && <Link
               className="mt-4 inline-flex rounded-md border border-teal-700 bg-teal-500/10 px-3 py-2 text-sm font-semibold text-teal-100 hover:border-teal-400"
               href="/workspace"
             >
               Manual Workspace
-            </Link>
+            </Link>}
           </div>
         </div>
       </section>

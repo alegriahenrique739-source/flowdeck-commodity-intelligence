@@ -4,6 +4,11 @@ import { LayoutShell } from "@/components/LayoutShell";
 import { MetricCard } from "@/components/MetricCard";
 import { getApiDocsUrl, getOpenApiUrl } from "@/lib/api";
 import { isPublicDemoMode } from "@/lib/config";
+import { publicPageMetadata } from "@/lib/search-visibility";
+
+export function generateMetadata() {
+  return publicPageMetadata("/");
+}
 
 const capabilities = [
   ["Market Data", "CSV validation for Brent and WTI futures curves."],

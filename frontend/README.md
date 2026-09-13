@@ -1,5 +1,9 @@
 # FlowDeck Frontend
 
+This public-release branch has a separate restricted-backend HTTPS suite:
+see [release verification and hosting handoff](../docs/PUBLIC_RELEASE_CANDIDATE.md).
+`npm run test:e2e:public` requires the documented public loopback build first.
+
 Local Next.js frontend shell for FlowDeck. The UI is read-only and calls the FastAPI backend for all data and financial outputs.
 
 ## Backend

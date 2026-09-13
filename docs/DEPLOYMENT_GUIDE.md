@@ -1,5 +1,11 @@
 # Deployment Guide
 
+**Release override:** follow [Public Release Candidate](PUBLIC_RELEASE_CANDIDATE.md)
+for the current mandatory public-mode environment, one-worker limit, isolated
+storage and post-deployment checks. The historical QA below predates this boundary.
+Direct `/workspace` access now shows a local-only notice in public builds; it does
+not expose file selection. Keep indexing disabled until live review passes.
+
 This guide describes the Public Demo V1 deployment for FlowDeck. It is intentionally minimal and keeps the public scope focused on backend-owned synthetic demo mode.
 
 For the step-by-step dry-run procedure, see `docs/PUBLIC_DEMO_DEPLOYMENT_RUNBOOK.md`.

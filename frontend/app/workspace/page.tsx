@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { isPublicDemoMode } from "@/lib/config";
 import { ApiStatusCard } from "@/components/ApiStatusCard";
 import { DemoRunPanel } from "@/components/DemoRunPanel";
 import { ErrorBanner } from "@/components/ErrorBanner";
@@ -90,6 +92,16 @@ export default function WorkspacePage() {
   const [contractSizeBbl, setContractSizeBbl] = useState("1000");
   const [stressScenario, setStressScenario] =
     useState<StressScenarioName>("PARALLEL_DOWN_5");
+
+  if (isPublicDemoMode) return (
+    <LayoutShell>
+      <section className="border-b border-slate-800 py-8">
+        <h1 className="text-3xl font-semibold text-white">Analytics Workspace</h1>
+        <p className="mt-3 text-slate-300">Local / development only. File uploads are not available in the public demo.</p>
+        <Link className="mt-5 inline-flex text-teal-200 underline" href="/demo">Run the synthetic demo</Link>
+      </section>
+    </LayoutShell>
+  );
 
   const allFilesSelected = Boolean(marketFile && futuresFile && physicalFile);
   const positionFilesSelected = Boolean(futuresFile && physicalFile);

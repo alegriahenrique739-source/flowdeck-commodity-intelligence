@@ -170,6 +170,13 @@ docs/GITHUB_REPO_DESCRIPTION.md
 
 ## Engineering Rules
 
+- This is the restricted public release branch. Follow `docs/PUBLIC_RELEASE_CANDIDATE.md`.
+- Never deploy local mode publicly. Use `FLOWDECK_DEPLOYMENT_MODE=public_demo`, exact HTTPS CORS, imports=false, one worker/instance and isolated `runs/public-demo/` storage.
+- Keep the route allowlist default-deny before body parsing. Do not mount private pilot or add customer uploads here.
+- Run the real restricted HTTPS browser rehearsal before promotion, not only permissive local API tests.
+- Search policy is not authorization. Keep `FLOWDECK_ALLOW_INDEXING=false` until live review; only `/` and `/demo` may become indexable. Run/report/private/workspace URLs remain noindex.
+- Do not commit generated test output or QA TLS material. Historical generated JSON remains in old Git history even when removed from the candidate index.
+
 - Keep route handlers thin.
 - Keep financial logic in service modules.
 - Add or update tests for every behavioral change.

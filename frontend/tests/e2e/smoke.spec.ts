@@ -38,6 +38,11 @@ test.describe("FlowDeck frontend smoke tests", () => {
     await page.goto("/workspace");
 
     await expect(page.getByRole("heading", { name: "Analytics Workspace" })).toBeVisible();
+    if (publicDemoMode) {
+      await expect(page.getByText("Local / development only.", { exact: false })).toBeVisible();
+      await expect(page.locator('input[type="file"]')).toHaveCount(0);
+      return;
+    }
     await expect(page.getByRole("heading", { name: "Run Sample Demo" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Market Data CSV" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Futures Positions CSV" })).toBeVisible();

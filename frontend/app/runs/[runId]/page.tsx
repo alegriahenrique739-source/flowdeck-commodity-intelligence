@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LayoutShell } from "@/components/LayoutShell";
 import { MetricCard } from "@/components/MetricCard";
 import { getRun, getRunReportUrl } from "@/lib/api";
+import { isPublicDemoMode } from "@/lib/config";
 import {
   formatBbl,
   formatDateTime,
@@ -14,12 +16,8 @@ import {
 } from "@/lib/format";
 import type { RunDetail } from "@/lib/types";
 
-export default function RunDetailPage({
-  params
-}: {
-  params: { runId: string };
-}) {
-  const runId = decodeURIComponent(params.runId);
+export default function RunDetailPage() {
+  const { runId } = useParams<{ runId: string }>();
   const [run, setRun] = useState<RunDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,7 +54,7 @@ export default function RunDetailPage({
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
             <div className="text-sm font-semibold uppercase text-teal-200">
-              Local run record
+              {isPublicDemoMode ? "Shared synthetic demo run" : "Local run record"}
             </div>
             <h1 className="mt-3 text-3xl font-semibold tracking-normal text-white md:text-4xl">
               Run Detail
@@ -102,12 +100,12 @@ export default function RunDetailPage({
           >
             Back to Demo
           </Link>
-          <Link
+          {!isPublicDemoMode && <Link
             className="rounded-md border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-100 hover:border-slate-500"
             href="/workspace"
           >
             Back to Workspace
-          </Link>
+          </Link>}
         </div>
       </section>
 
